@@ -5,12 +5,11 @@ const { traerCategorias, traerProductos, traerProductoPorCategoriayOrden, traerP
 
 app.use(express.json());
 
-
 app.get('/', async(req, res) => {
     try {
         const productos = await traerProductos();
         const categorias = await traerCategorias();
-        res.status(200).send(productos, categorias);
+        res.status(200).sendFile(__dirname + '/index.html');
     } catch (error) {
         res.status(500).send({
             error: `Algo salio mal...${error}`,
