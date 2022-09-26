@@ -4,12 +4,23 @@ const port = 3000;
 const { traerCategorias, traerProductos, traerProductoPorCategoriayOrden, traerProductosOrdenados, traerProductoPorCategoria } = require('./assets/js/consultas');
 
 app.use(express.json());
+app.use(express.static(__dirname + "/assets"));
 
 app.get('/', async(req, res) => {
     try {
-        const productos = await traerProductos();
-        const categorias = await traerCategorias();
         res.status(200).sendFile(__dirname + '/index.html');
+    } catch (error) {
+        res.status(500).send({
+            error: `Algo salio mal...${error}`,
+            code: 500
+        })
+    }
+});
+
+app.get('/producto', async(req, res) => {
+    try {
+        const productos = await traerProductos();
+        res.status(200).send(productos);
     } catch (error) {
         res.status(500).send({
             error: `Algo salio mal...${error}`,
@@ -33,8 +44,7 @@ app.get('/categoria', async (req, res)=> {
     }
     try {
         const productos = await verifyData(categoria, orden);
-        const categorias = await traerCategorias();
-        res.status(200).send(productos, categorias);
+        res.status(200).send(productos);
     } catch (error) {
         res.status(500).send({
             error: `Algo salio mal...${error}`,
