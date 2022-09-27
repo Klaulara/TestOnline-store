@@ -1,5 +1,6 @@
 window.addEventListener('load', async()=> {
-  const { data } = await axios.get("http://localhost:3000/producto");
+  const res = await fetch("http://localhost:3000/producto");
+  const data = await res.json();
   const listaProductos = document.getElementById('productos');
   listaProductos.innerHTML = ""
   data.forEach(e => {
@@ -22,8 +23,8 @@ document.getElementById("boton").addEventListener('click', async(a)=> {
     a.preventDefault();
     const categoria = document.getElementById("categoria").value;
     const orden = document.getElementById("orden").value;
-    const { data } = await axios.get(`http://localhost:3000/categoria?categoria=${categoria}&orden=${orden}`);
-    console.log(data)
+    const res = await fetch(`http://localhost:3000/categoria?categoria=${categoria}&orden=${orden}`);
+    const data = await res.json();
     const listaProductos = document.getElementById('productos');
     listaProductos.innerHTML = ""
     data.forEach(e => {
