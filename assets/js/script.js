@@ -1,18 +1,43 @@
-// const getProductos = async () => {
-//   let productosList = document.getElementById("productos");
-//   let res = await fetch("http://localhost:3000/categoria");
-//   let productos = await res.json(); 
-//   console.log(productos);
-// //   productosList.innerHTML += `
-// //   <div class="card m-2" style="width: 15rem;">
-// //     <img src="" class="card-height" alt="..." />
-// //     <div class="card-body align-items-end">
-// //     <h5 class="card-title"> </h5>
-// //     <p class="card-text price"></p>
-// //     <a href="#" class="btn">
-// //       <i class="fa-solid fa-cart-plus"></i>
-// //     </a>
-// //   </div>
-// // </div>
-// //   `
-// };
+window.addEventListener('load', async()=> {
+  const { data } = await axios.get("http://localhost:3000/producto");
+  const listaProductos = document.getElementById('productos');
+  listaProductos.innerHTML = ""
+  data.forEach(e => {
+      listaProductos.innerHTML += `
+      <div class="card m-2" style="width: 15rem;">
+          <img src="${e.url_image}" class="card-height" alt="..." />
+          <div class="card-body align-items-end">
+              <h5 class="card-title">${e.name}</h5>
+              <p class="card-text price">$ ${e.price}</p>
+              <a href="#" class="btn">
+                  <i class="fa-solid fa-cart-plus"></i>
+              </a>
+          </div>
+      </div>
+      `
+  });
+});
+
+document.getElementById("boton").addEventListener('click', async(a)=> {
+    a.preventDefault();
+    const categoria = document.getElementById("categoria").value;
+    const orden = document.getElementById("orden").value;
+    const { data } = await axios.get(`http://localhost:3000/categoria?categoria=${categoria}&orden=${orden}`);
+    console.log(data)
+    const listaProductos = document.getElementById('productos');
+    listaProductos.innerHTML = ""
+    data.forEach(e => {
+      listaProductos.innerHTML += ` 
+      <div class="card m-2" style="width: 15rem;">
+          <img src="${e.url_image}" class="card-height" alt="..." />
+          <div class="card-body align-items-end">
+              <h5 class="card-title">${e.name}</h5>
+              <p class="card-text price">$ ${e.price}</p>
+              <a href="#" class="btn">
+                  <i class="fa-solid fa-cart-plus"></i>
+              </a>
+          </div>
+      </div>
+      `
+    });
+});
